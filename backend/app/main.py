@@ -9,7 +9,7 @@ app = FastAPI(title="InventaPlas API", version="1.0.0")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],
+    allow_origins=["http://localhost:3000", "https://inventaplas.vercel.app", "https://inventaplas-git-main-leticiamontarroyos-projects.vercel.app"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
