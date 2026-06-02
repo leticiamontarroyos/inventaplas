@@ -66,8 +66,8 @@ export default function ProducaoPage() {
                   <label className="block text-sm text-gray-600 mb-1">Turno</label>
                   <select value={form.shift} onChange={e => setForm(f => ({ ...f, shift: e.target.value }))}
                     className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    <option value="manha">Manhã</option>
-                    <option value="noite">Noite</option>
+                    <option value="manha">Turno A (Manhã)</option>
+                    <option value="noite">Turno B (Noite)</option>
                   </select>
                 </div>
               </div>
@@ -79,8 +79,19 @@ export default function ProducaoPage() {
                 </div>
                 <div>
                   <label className="block text-sm text-gray-600 mb-1">Máquina</label>
-                  <input value={form.machine} onChange={e => setForm(f => ({ ...f, machine: e.target.value }))}
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                  <select value={form.machine} onChange={e => setForm(f => ({ ...f, machine: e.target.value }))}
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <option value="">Selecione a máquina</option>
+          <option value="Máquina 1 - 470t">Máquina 1 - 470t</option>
+          <option value="Máquina 2 - 800t (I)">Máquina 2 - 800t (I)</option>
+          <option value="Máquina 3 - 800t (II)">Máquina 3 - 800t (II)</option>
+          <option value="Máquina 4 - 1080t (I)">Máquina 4 - 1080t (I)</option>
+          <option value="Máquina 5 - 1300t">Máquina 5 - 1300t</option>
+          <option value="Máquina 6 - 1000t">Máquina 6 - 1000t</option>
+          <option value="Máquina 7 - 1080t (II)">Máquina 7 - 1080t (II)</option>
+          <option value="Máquina 8 - 1400t">Máquina 8 - 1400t</option>
+          <option value="Máquina 9 - 3060t">Máquina 9 - 3060t</option>
+        </select>
                 </div>
               </div>
               <div>
