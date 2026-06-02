@@ -17,20 +17,20 @@ export default function RelatoriosPage() {
   useEffect(load, [])
 
   const moveis = estoque.filter(e =>
-    !e.product_name?.toLowerCase().includes('bacia') &&
-    !e.product_name?.toLowerCase().includes('balde') &&
-    !e.product_name?.toLowerCase().includes('infantil') &&
-    !e.product_name?.toLowerCase().includes('relax')
+    !e.product?.name?.toLowerCase().includes('bacia') &&
+    !e.product?.name?.toLowerCase().includes('balde') &&
+    !e.product?.name?.toLowerCase().includes('infantil') &&
+    !e.product?.name?.toLowerCase().includes('relax')
   )
 
   const ud = estoque.filter(e =>
-    e.product_name?.toLowerCase().includes('bacia') ||
-    e.product_name?.toLowerCase().includes('balde')
+    e.product?.name?.toLowerCase().includes('bacia') ||
+    e.product?.name?.toLowerCase().includes('balde')
   )
 
   const infantil = estoque.filter(e =>
-    e.product_name?.toLowerCase().includes('infantil') ||
-    e.product_name?.toLowerCase().includes('relax')
+    e.product?.name?.toLowerCase().includes('infantil') ||
+    e.product?.name?.toLowerCase().includes('relax')
   )
 
   const totalMoveis = moveis.reduce((acc, e) => acc + e.quantity, 0)
@@ -51,9 +51,9 @@ export default function RelatoriosPage() {
           </tr>
         </thead>
         <tbody>
-          {itens.sort((a, b) => a.product_name?.localeCompare(b.product_name)).map((item, i) => (
+          {itens.sort((a, b) => a.product?.name?.localeCompare(b.product?.name)).map((item, i) => (
             <tr key={i} className="border-b border-gray-50 hover:bg-gray-50">
-              <td className="py-2 text-gray-700">{item.product_name}</td>
+              <td className="py-2 text-gray-700">{item.product?.name}</td>
               <td className="py-2 text-right font-medium text-gray-800">{item.quantity.toLocaleString('pt-BR')}</td>
             </tr>
           ))}
