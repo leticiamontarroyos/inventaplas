@@ -67,7 +67,7 @@ export default function RelatoriosPage() {
       <Navbar />
       <main className="max-w-4xl mx-auto px-4 py-8">
         <h1 className="text-2xl font-bold text-gray-800 mb-2">Relatórios</h1>
-        <p className="text-sm text-gray-500 mb-8">Estoque atual por categoria</p>
+        <div className="flex justify-between items-center mb-8">         <p className="text-sm text-gray-500">Estoque atual por categoria</p>         <button onClick={() => window.print()} className="px-4 py-2 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700 transition-colors">           🖨️ Imprimir / Salvar PDF         </button>       </div>
 
         {loading ? (
           <p className="text-gray-500">Carregando...</p>
