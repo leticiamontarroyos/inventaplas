@@ -108,7 +108,7 @@ def list_movements(limit: int = 100, db: Session = Depends(get_db), current_user
               .options(joinedload(MovementLog.product), joinedload(MovementLog.warehouse))
               .order_by(MovementLog.created_at.desc())
               .limit(limit).all())
-              @router.delete("/production/{entry_id}")
+@router.delete("/production/{entry_id}")
 def delete_production(entry_id: str, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
     entry = db.query(ProductionEntry).filter(ProductionEntry.id == entry_id).first()
     if not entry:
