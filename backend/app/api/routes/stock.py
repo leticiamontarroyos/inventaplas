@@ -108,3 +108,66 @@ def list_movements(limit: int = 100, db: Session = Depends(get_db), current_user
               .options(joinedload(MovementLog.product), joinedload(MovementLog.warehouse))
               .order_by(MovementLog.created_at.desc())
               .limit(limit).all())
+              @router.delete("/production/{entry_id}")
+def delete_production(entry_id: str, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+    entry = db.query(ProductionEntry).filter(ProductionEntry.id == entry_id).first()
+    if not entry:
+        raise HTTPException(status_code=404, detail="Lançamento não encontrado")
+    pos = _get_or_create_position(db, entry.product_id, entry.warehouse_id)
+    pos.quantity -= entry.quantity
+    db.delete(entry)
+    db.commit()
+    return {"ok": True}
+
+@router.patch("/production/{entry_id}", response_model=ProductionOut)
+def update_production(entry_id: str, data: dict, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+    entry = db.query(ProductionEntry).options(joinedload(ProductionEntry.product), joinedload(ProductionEntry.warehouse)).filter(ProductionEntry.id == entry_id).first()
+    if not entry:
+        raise HTTPException(status_code=404, detail="Lançamento não encontrado")
+    if "quantity" in data and data["quantity"] != entry.quantity:
+        diff = data["quantity"] - entry.quantity
+        pos = _get_or_create_position(db, entry.product_id, entry.warehouse_id)
+        pos.quantity += diff
+        entry.quantity = data["quantity"]
+    if "operator_name" in data:
+        entry.operator_name = data["operator_name"]
+    if "notes" in data:
+        entry.notes = data["notes"]
+    db.commit()
+    db.refresh(entry)
+    return entry
+
+@router.delete("/dispatch/{entry_id}")
+def delete_dispatch(entry_id: str, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+    entry = db.query(DispatchEntry).filter(DispatchEntry.id == entry_id).first()
+    if not entry:
+        raise HTTPException(status_code=404, detail="Saída não encontrada")
+    pos = _get_or_create_position(db, entry.product_id, entry.warehouse_id)
+    pos.quantity += entry.quantity
+    db.delete(entry)
+    db.commit()
+    return {"ok": True}
+
+@router.patch("/dispatch/{entry_id}", response_model=DispatchOut)
+def update_dispatch(entry_id: str, data: dict, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+    entry = db.query(DispatchEntry).options(joinedload(DispatchEntry.product), joinedload(DispatchEntry.warehouse)).filter(DispatchEntry.id == entry_id).first()
+    if not entry:
+        raise HTTPException(status_code=404, detail="Saída não encontrada")
+    if "quantity" in data and data["quantity"] != entry.quantity:
+        diff = data["quantity"] - entry.quantity
+        pos = _get_or_create_position(db, entry.product_id, entry.warehouse_id)
+        if pos.quantity - diff < 0:
+            raise HTTPException(status_code=400, detail="Saldo insuficiente")
+        pos.quantity -= diff
+        entry.quantity = data["quantity"]
+    if "client" in data:
+        entry.client = data["client"]
+    if "truck_plate" in data:
+        entry.truck_plate = data["truck_plate"]
+    if "order_number" in data:
+        entry.order_number = data["order_number"]
+    if "notes" in data:
+        entry.notes = data["notes"]
+    db.commit()
+    db.refresh(entry)
+    return entry
