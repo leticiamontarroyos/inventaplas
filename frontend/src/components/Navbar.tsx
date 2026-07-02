@@ -10,7 +10,9 @@ const links = [
   { href: '/expedicao', label: 'Expedição' },
   { href: '/ajuste', label: 'Ajuste' },
   { href: '/historico', label: 'Histórico' },
-  { href: '/produtos', label: 'Produtos' }, { href: '/relatorios', label: 'Relatórios' },
+  { href: '/produtos', label: 'Produtos' },
+  { href: '/relatorios', label: 'Relatórios' },
+  { href: '/estoque-negativo', label: '⚠️ Negativos' },
 ]
 
 export default function Navbar() {
