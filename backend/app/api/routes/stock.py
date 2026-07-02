@@ -171,3 +171,10 @@ def update_dispatch(entry_id: str, data: dict, db: Session = Depends(get_db), cu
     db.commit()
     db.refresh(entry)
     return entry
+    @router.get("/negative", response_model=List[StockPositionOut])
+def get_negative_stock(db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+    return (db.query(StockPosition)
+              .options(joinedload(StockPosition.product), joinedload(StockPosition.warehouse))
+              .filter(StockPosition.quantity < 0)
+              .order_by(StockPosition.quantity.asc())
+              .all())
